@@ -14,9 +14,7 @@ module SocialShareCounters
 
       @uri    = URI(url)
       @http   = ::Net::HTTP.new(@uri.host, @uri.port)
-
       set_http_params
-      set_request_params
 
     end # new
 

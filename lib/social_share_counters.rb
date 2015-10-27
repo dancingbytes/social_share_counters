@@ -12,6 +12,9 @@ module SocialShareCounters
 
   VK_LINK       = 'http://vk.com/share.php?act=count&index=1&url=%{url}'.freeze
   FB_LINK       = 'http://graph.facebook.com/?id=%{url}'.freeze
+
+  # FB_LINK       = 'https://graph.facebook.com/fql?q=SELECT%20share_count%20FROM%20link_stat%20WHERE%20url%20=%20%22%{url}'.freeze
+
   TWITTER_LINK  = 'http://cdn.api.twitter.com/1/urls/count.json?url=%{url}'.freeze
   MAILRU_LINK   = 'http://connect.mail.ru/share_count?url_list=%{url}'.freeze
   OK_LINK       = 'http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&ref=%{url}'.freeze
@@ -103,7 +106,7 @@ module SocialShareCounters
   def timeout(t = nil)
 
     @timeout = t.abs if t.is_a?(::Numeric)
-    @timeout || 10 # default
+    @timeout
 
   end # timeout
 
@@ -115,7 +118,15 @@ module SocialShareCounters
     @debug = d === true
   end # debug
 
+  def user_agent(str = nil)
+
+    return @user_agent if str.nil?
+    @user_agent = str
+
+  end # user_agent
+
 end # SocialShareCounters
 
-SSC = SocialShareCounters
+require "social_share_counters/defaults"
 
+SSC = SocialShareCounters

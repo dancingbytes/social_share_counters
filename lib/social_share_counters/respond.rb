@@ -8,10 +8,6 @@ module SocialShareCounters
 
         resp = new(req)
 
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
-
         r = (resp.result || "").match(/VK.Share.count\(1, (?<count>\d+)\);/)
         r ?  r["count"] : 0
 
@@ -20,10 +16,6 @@ module SocialShareCounters
       def fb(req)
 
         resp = new(req)
-
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
         r["shares"] || 0
@@ -34,10 +26,6 @@ module SocialShareCounters
 
         resp = new(req)
 
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
-
         r = ::Oj.load((resp.result || "{}"), mode: :null)
         r["count"] || 0
 
@@ -46,10 +34,6 @@ module SocialShareCounters
       def mailru(req)
 
         resp = new(req)
-
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
         r.empty? ? 0 : r.to_a[0][1]["shares"]
@@ -60,10 +44,6 @@ module SocialShareCounters
 
         resp = new(req)
 
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
-
         r = (resp.result || "").match(/ODKL.updateCountOC\('odklocs0','(?<count>\d+)','0','0'\);/)
         r ?  r["count"] : 0
 
@@ -72,10 +52,6 @@ module SocialShareCounters
       def pinterest(req)
 
         resp = new(req)
-
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
         r["count"] || 0
@@ -86,10 +62,6 @@ module SocialShareCounters
 
         resp = new(req)
 
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
-
         r = ::Oj.load((resp.result || "{}"), mode: :null)
         r["count"] || 0
 
@@ -98,10 +70,6 @@ module SocialShareCounters
       def gplus(req)
 
         resp = new(req)
-
-        if ::SocialShareCounters.debug?
-          puts(resp.success? ? resp.result : resp.error)
-        end
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
         r['result']['metadata']['globalCounts']['count']
@@ -120,6 +88,8 @@ module SocialShareCounters
       else
         prepare_error(request)
       end
+
+      debug_info
 
     end # new
 
@@ -156,6 +126,15 @@ module SocialShareCounters
       @result = nil
 
     end # prepare_error
+
+    def debug_info
+
+      return unless ::SocialShareCounters.debug?
+
+      puts "-> Result"
+      puts "-> #{(success? ? result : error)}"
+
+    end # debug_info
 
   end # Respond
 

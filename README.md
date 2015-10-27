@@ -48,16 +48,16 @@ SSC.twitter('http://www.gogole.com')
 
 ```
 
-### Set some params
+## Set some params
 
-# Timeout
+### Timeout
 SSC.timeout 60 # (30 default)
 
-# For debug
+### For debug
 SSC.debug(true)
 
 
-### License
+## License
 
 Author: Tyralion (piliaiev@gmail.com)
 
