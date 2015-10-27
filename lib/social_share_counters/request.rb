@@ -2,6 +2,9 @@ module SocialShareCounters
 
   class Request
 
+    USER_AGENT  = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36'.freeze
+    ACCEPT      = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'.freeze
+
     def self.get(url)
       new(url).get
     end # self.get
@@ -61,83 +64,12 @@ module SocialShareCounters
 
     def set_request_params
 
-      @request['User-Agent']   = ::SocialShareCounters.user_agent
-      @request['Accept']       = "*/*"
-      @request['Content-Type'] = "text/json; charset=UTF-8"
+      @request['User-Agent']   = USER_AGENT
+      @request['Accept']       = ACCEPT
 
       self
 
     end # set_request_params
-
-=begin
-    def block_run
-
-      error     = false
-      try_count = ::IbateleSms::RETRY
-
-      begin
-
-
-
-          ::Net::HTTP.start(
-            ::IbateleSms::HOST,
-            ::IbateleSms::PORT,
-            :use_ssl => ::IbateleSms::USE_SSL
-          ) do |http|
-            yield(http)
-          end
-
-
-      rescue ::Errno::ECONNREFUSED
-
-        if try_count > 0
-          try_count -= 1
-          sleep ::IbateleSms::WAIT_TIME
-          retry
-        else
-          error = ::IbateleSms::ConnectionError.new("Прервано соедиение с сервером")
-        end
-
-      rescue ::Timeout::Error
-
-        if try_count > 0
-          try_count -= 1
-          sleep ::IbateleSms::WAIT_TIME
-          retry
-        else
-          error = ::IbateleSms::TimeoutError.new("Превышен интервал ожидания #{::IbateleSms::TIMEOUT} сек. после #{::IbateleSms::RETRY} попыток")
-        end
-
-      rescue => e
-        error = ::IbateleSms::UnknownError.new(e.message)
-      end
-
-      error
-
-    end # block_run
-
-    def request
-
-      try_count = ::IbateleSms::RETRY
-      headers   = {
-        "Content-Type" => "text/xml; charset=utf-8"
-      }
-
-      res = yield(headers)
-      while(try_count > 0 && res.code.to_i >= 300)
-
-        log("[retry] #{try_count}. Wait #{::IbateleSms::WAIT_TIME} sec.")
-
-        res = yield(headers)
-        try_count -= 1
-        sleep ::IbateleSms::WAIT_TIME
-
-      end # while
-
-      res
-
-    end # request
-=end
 
   end # Request
 

@@ -53,8 +53,8 @@ module SocialShareCounters
 
         resp = new(req)
 
-        r = ::Oj.load((resp.result || "{}"), mode: :null)
-        r["count"] || 0
+        r = (resp.result || "").match(/"count":(?<count>\d+)/)
+        r ?  r["count"] : 0
 
       end # pinterest
 
@@ -72,7 +72,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
-        r['result']['metadata']['globalCounts']['count']
+        r.empty? ? 0 : r['result']['metadata']['globalCounts']['count']
 
       end # gplus
 

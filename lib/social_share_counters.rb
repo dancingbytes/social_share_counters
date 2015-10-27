@@ -14,10 +14,10 @@ module SocialShareCounters
   FB_LINK       = 'http://graph.facebook.com/?id=%{url}'.freeze
   TWITTER_LINK  = 'http://cdn.api.twitter.com/1/urls/count.json?url=%{url}'.freeze
   MAILRU_LINK   = 'http://connect.mail.ru/share_count?url_list=%{url}'.freeze
-  OK_LINK       = 'http://www.odnoklassniki.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&ref=%{url}'.freeze
-  LINKEDIN      = 'http://www.linkedin.com/countserv/count/share?url=%{url}&format=json'.freeze
+  OK_LINK       = 'http://ok.ru/dk?st.cmd=extOneClickLike&uid=odklocs0&ref=%{url}'.freeze
+  LINKEDIN      = 'https://www.linkedin.com/countserv/count/share?url=%{url}&format=json'.freeze
   GPLUS         = 'https://clients6.google.com/rpc?key={key}'.freeze
-  PINTEREST_LINK  = 'http://api.pinterest.com/v1/urls/count.json?callback=&url=%{url}'.freeze
+  PINTEREST_LINK  = 'http://api.pinterest.com/v1/urls/count.json?&url=%{url}'.freeze
 
   def vk(url)
 
@@ -103,7 +103,7 @@ module SocialShareCounters
   def timeout(t = nil)
 
     @timeout = t.abs if t.is_a?(::Numeric)
-    @timeout
+    @timeout || 30
 
   end # timeout
 
@@ -115,15 +115,6 @@ module SocialShareCounters
     @debug = d === true
   end # debug
 
-  def user_agent(str = nil)
-
-    return @user_agent if str.nil?
-    @user_agent = str
-
-  end # user_agent
-
 end # SocialShareCounters
-
-require "social_share_counters/defaults"
 
 SSC = SocialShareCounters
