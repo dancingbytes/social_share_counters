@@ -56,6 +56,9 @@ SSC.timeout 60 # (30 default)
 ### For debug
 SSC.debug(true)
 
+## Usefull links
+  * [https://gist.github.com/jonathanmoore/2640302](https://gist.github.com/jonathanmoore/2640302)
+  * [http://sigov.ru/2012/12/15/shares/](http://sigov.ru/2012/12/15/shares/)
 
 ## License
 
