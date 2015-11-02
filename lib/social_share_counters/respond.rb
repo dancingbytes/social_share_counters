@@ -9,7 +9,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = (resp.result || "").match(/VK.Share.count\(1, (?<count>\d+)\);/)
-        r ?  r["count"] : 0
+        to_int(r ?  r["count"] : 0)
 
       end # vk
 
@@ -18,7 +18,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
-        r["shares"] || 0
+        to_int(r["shares"])
 
       end # fb
 
@@ -27,7 +27,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
-        r["count"] || 0
+        to_int(r["count"])
 
       end # twitter
 
@@ -36,7 +36,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
-        r.empty? ? 0 : r.to_a[0][1]["shares"]
+        to_int(r.empty? ? 0 : r.to_a[0][1]["shares"])
 
       end # mailru
 
@@ -45,7 +45,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = (resp.result || "").match(/ODKL.updateCountOC\('odklocs0','(?<count>\d+)','0','0'\);/)
-        r ?  r["count"] : 0
+        to_int(r ?  r["count"] : 0)
 
       end # ok
 
@@ -54,7 +54,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = (resp.result || "").match(/"count":(?<count>\d+)/)
-        r ?  r["count"] : 0
+        to_int(r ?  r["count"] : 0)
 
       end # pinterest
 
@@ -63,7 +63,7 @@ module SocialShareCounters
         resp = new(req)
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
-        r["count"] || 0
+        to_int(r["count"])
 
       end # linkedin
 
@@ -72,9 +72,15 @@ module SocialShareCounters
         resp = new(req)
 
         r = ::Oj.load((resp.result || "{}"), mode: :null)
-        r.empty? ? 0 : r['result']['metadata']['globalCounts']['count']
+        to_int(r.empty? ? 0 : r['result']['metadata']['globalCounts']['count'])
 
       end # gplus
+
+      private
+
+      def to_int(obj)
+        String(obj).to_i
+      end # to_int
 
     end # class << self
 
